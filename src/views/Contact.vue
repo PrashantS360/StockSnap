@@ -354,8 +354,9 @@ export default {
             this.loader = true;
             emailjs.sendForm(env.VITE_SERVICE_ID, "stocksnap", this.$refs.form, env.VITE_PUBLIC_KEY)
                 .then((result) => {
-                    this.formValues.value = { name: "", phone: "", message: "", email: "" };
+                    this.formValues = { name: "", phone: "", message: "", email: "" };
                     console.log('SUCCESS!', result.text);
+                    alert("Message sent successfully, We will back to you soon!")
                 }, (error) => {
                     console.log('FAILED...', error.text);
                 });
