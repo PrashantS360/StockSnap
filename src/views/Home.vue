@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const data =
@@ -288,8 +288,9 @@ const redirect = (symbol) => {
 
 getStocks();
 
-const orderBy = (s) => {
+const orderBy = () => {
     let copy = stocks.value;
+    let s = sortBy.value;
     if (s == "gain") {
         sortBy.value = "gain";
         copy.sort((a, b) => (a.changesPercentage < b.changesPercentage) ? 1 : (a.changesPercentage > b.changesPercentage) ? -1 : 0);
@@ -313,82 +314,85 @@ const orderBy = (s) => {
 
     stocks.value = copy;
 }
+
 </script>
 
 <template>
-    <div class="mt-8 ">
-        <h2 class="font-bold text-3xl">{{ sortBy == "gain" ? "Top Gainers" : sortBy == "loss" ? "Top Losers" : sortBy ==
-            "volume" ? "Top Volume" :
-            sortBy == "yearHigh" ? "52 Week High" : "52 Week Low" }}</h2>
-        <ul class="flex justify-between border-b-2 mt-8 mb-5 text-lg">
-            <button class="border-green-600 py-2" :class="sortBy == 'gain' ? 'text-green-600 border-b-[3px]' : ''"
-                @click="orderBy('gain')">Top Gainers</button>
-            <button class="border-green-600 py-2" :class="sortBy == 'loss' ? 'text-green-600 border-b-[3px]' : ''"
-                @click="orderBy('loss')">Top Losers</button>
-            <button class="border-green-600 py-2" :class="sortBy == 'volume' ? 'text-green-600 border-b-[3px]' : ''"
-                @click="orderBy('volume')">Top by volume</button>
-            <button class="border-green-600 py-2" :class="sortBy == 'yearHigh' ? 'text-green-600 border-b-[3px]' : ''"
-                @click="orderBy('yearHigh')">52W high</button>
-            <button class="border-green-600 py-2" :class="sortBy == 'yearLow' ? 'text-green-600 border-b-[3px]' : ''"
-                @click="orderBy('yearLow')">52W Low</button>
-        </ul>
+    <div class="mt-4">
+        <div class="my-4">
+            <label for="underline_select" class="font-bold text-3xl mb-2">{{ sortBy == "gain" ? "Top Gainers" : sortBy ==
+                "loss" ? "Top Losers" : sortBy ==
+                    "volume" ? "Top Volume" :
+                sortBy == "yearHigh" ? "52 Week High" : "52 Week Low" }}</label>
+            <select id="underline_select"
+                class="bg-gray-50 border border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 mt-3 min-w-[33%]" 
+                v-model="sortBy" @change="orderBy">
+                <option value="gain" selected>Top Gainers</option>
+                <option value="loss">Top Losers</option>
+                <option value="volume">Top By Volume</option>
+                <option value="yearHigh">52W High</option>
+                <option value="yearLow">52W Low</option>
+            </select>
+        </div>
 
-        <table class="w-full text-left">
-            <thead class="text-gray-400 uppercase text-sm">
-                <tr class="border-[1px] ">
-                    <th scope="col" class="px-6 py-3">
-                        company
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Volume
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        market price
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        52W low
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        52W high
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Exchange
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="stock in stocks" :key="stock.symbol"
-                    class="bg-white border-[1px] hover:bg-gray-100 cursor-pointer" @click="redirect(stock.symbol)">
-                    <th scope="row" class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap text-lg">
-                        {{ stock.name }}
-                    </th>
-                    <td class="px-6 py-4 text-gray-600">
-                        {{ stock.volume }}
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="font-[600]">
-                            &#8377; {{ stock.price }}
-                        </div>
-                        <div v-if="stock.changesPercentage < 0" class="text-red-500">
-                            {{ stock.change }}({{ stock.changesPercentage * -1 }}%)
-                        </div>
-                        <div v-else class="text-green-500">
-                            {{ stock.change }}({{ stock.changesPercentage }}%)
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-gray-600">
-                        &#8377; {{ stock.yearLow }}
-                    </td>
-                    <td class="px-6 py-4 text-gray-600">
-                        &#8377; {{ stock.yearHigh }}
-                    </td>
-                    <td class="px-6 py-4 ">
-                        <button class="text-blue-500 border-2 border-blue-500 rounded-md px-2 py-1">
-                            {{ stock.exchange }}
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-left ">
+                <thead class="text-gray-400 uppercase text-sm">
+                    <tr class="border-[1px] ">
+                        <th scope="col" class="px-6 py-3">
+                            company
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Volume
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            market price
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            52W low
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            52W high
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Exchange
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="stock in stocks" :key="stock.symbol"
+                        class="bg-white border-[1px] hover:bg-gray-100 cursor-pointer " @click="redirect(stock.symbol)">
+                        <th scope="row" class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap text-lg">
+                            {{ stock.name }}
+                        </th>
+                        <td class="px-6 py-4 text-gray-600">
+                            {{ stock.volume }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="font-[600]">
+                                &#8377; {{ stock.price }}
+                            </div>
+                            <div v-if="stock.changesPercentage < 0" class="text-red-500">
+                                {{ stock.change }}({{ stock.changesPercentage * -1 }}%)
+                            </div>
+                            <div v-else class="text-green-500">
+                                {{ stock.change }}({{ stock.changesPercentage }}%)
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-600">
+                            &#8377; {{ stock.yearLow }}
+                        </td>
+                        <td class="px-6 py-4 text-gray-600">
+                            &#8377; {{ stock.yearHigh }}
+                        </td>
+                        <td class="px-6 py-4 ">
+                            <button class="text-blue-500 border-2 border-blue-500 rounded-md px-2 py-1">
+                                {{ stock.exchange }}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>

@@ -1,29 +1,16 @@
-# StockSnap
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
 ## Project Setup
 
+Requirement : Install Node.js version 16.0 or higher
+Live Demo : https://movie-hive.netlify.app/
+
 ```sh
-npm install
+1) Clone the git respository using command "git clone https://github.com/PrashantS360/MovieHive.git"
+2) Install all the required modules using command "npm install"
 ```
 
-### Compile and Hot-Reload for Development
+### Start application
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```

@@ -6,7 +6,9 @@ import {RouterLink} from 'vue-router';
     <footer aria-label="Site Footer" class="bg-gray-100">
         <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
             <div class="flex justify-center text-4xl text-teal-600">
-                <RouterLink to="/">StockSnap</RouterLink>
+                <RouterLink to="/">
+                    <img src="/logo2.png" alt="logo" class="w-40"/>
+                </RouterLink>
             </div>
 
             <p class="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">

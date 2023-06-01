@@ -43,12 +43,12 @@ const chartData = ref({
     datasets: [
         {
             label: 'High',
-            backgroundColor: 'lightgreen',
+            backgroundColor: '#02c712',
             data: [3, 4, 2]
         },
         {
             label: 'Low',
-            backgroundColor: 'red',
+            backgroundColor: '#d90209',
             data: [1, 3, 1]
         },
     ]
@@ -95,7 +95,7 @@ getAllStocks();
 
 <template>
     <div class="flex">
-        <div class="mt-8 w-2/3">
+        <div class="mt-8 md:w-2/3 w-full">
             <h2 class="text-3xl px-1">{{ stock.name }} <span class="text-base text-gray-700 px-1">({{ stock.symbol }})</span>
         </h2>
         <h1 class="text-4xl font-bold px-1">
@@ -105,8 +105,9 @@ getAllStocks();
         </h1>
         <Bar v-if="showChart" class="mt-3" :data="chartData" :options="chartOptions"></Bar>
         
-        <h3 class="text-3xl mt-10 px-1">Performance</h3>
-        <div class="flex flex-wrap justify-evenly">
+        <div class="shadow-md rounded-md px-3">
+            <h3 class="text-3xl mt-10 px-1">Performance</h3>
+            <div class="flex flex-wrap justify-evenly">
             <div class="my-2 px-2 py-1 w-1/4">
                 <label for="open" class="text-gray-600">Open</label>
                 <p class="font-bold text-lg">{{ stock.open }}</p>
@@ -133,7 +134,8 @@ getAllStocks();
             </div>
         </div>
     </div>
-    <div class="mt-8 w-1/3 border-2 pt-5 ml-4 -pb-3 h-fit">
+    </div>
+    <div v-if="stocks.length>0" class="mt-8 w-1/3 md:block hidden shadow-md pt-5 ml-4 -pb-3 h-fit">
         <h3 class="text-2xl font-[580] pb-4 pl-4">You might be interested in </h3>
         <div>
             <div v-for="st in stocks" class="px-5 flex justify-between py-3 items-center border-b-2" v-show="st.symbol!=symbol">
